@@ -20,7 +20,8 @@ spec:
           helm:
             releaseName: grid-provider
             values: |
-              image: { repository: ghcr.io/praxis-proxy/grid-gateway, tag: "v{{ .Values.gridVersion }}@{{ required "gridGatewayDigest" .Values.gridGatewayDigest }}" }
+              {{- $image := regexSplit ":" (required "gridGatewayImage" .Values.gridGatewayImage) 2 }}
+              image: { repository: {{ first $image }}, tag: "{{ last $image }}" }
               gatewayConfig:
                 role: provider
                 localSite: {{`{{.name}}`}}

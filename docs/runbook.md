@@ -153,9 +153,9 @@ model plumbing (the grid-backend Service, NetworkPolicy allow-grid-provider) sta
 ## Known gaps
 
 - **Image and chart trust.** Container images are pinned by digest: the console and backend in
-  `apps/console/manifests/images/ghcr/`, the grid gateway by `gridGatewayDigest` in
+  `apps/console/manifests/images/ghcr/`, the grid gateway by `gridGatewayImage` in
   `apps/ai-grid-spokes/manifests/values.yaml`. The grid's OCI Helm charts (grid-operator,
-  praxis-gateway, grid-enrollment 0.2.0) are trusted by version only: Argo CD can't pin an OCI Helm
+  praxis-gateway, grid-enrollment 0.2.1) are trusted by version only: Argo CD can't pin an OCI Helm
   chart by digest, so a re-pushed chart version would be picked up.
 - **MaaS keeps a stale model URL.** maas-controller writes a MaaSModelRef's `status.endpoint` when the
   model reconciles and doesn't watch the Gateway, so a model created before Policy `maas-route` set the

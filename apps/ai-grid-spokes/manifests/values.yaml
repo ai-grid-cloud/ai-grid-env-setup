@@ -1,9 +1,11 @@
 # gitRepo and gitRef come from the root ApplicationSet as Helm parameters (bootstrap/00-gitops.sh).
 odhGitopsRef: "8897054629471af15b79573a7a158c71ffb30abf"         # odh-gitops main, 2026-10-16 (DSC v3, dashboard.dsc.maasPortal)
-gridVersion: 0.2.0             # switch to 0.2.1 once it's tagged and its charts are published
-# The grid gateway image by digest (the v<gridVersion> tag's multi-arch index); bump with gridVersion:
+# The grid release: the grid-operator and praxis-gateway chart versions here, and grid-enrollment's in
+# apps/grid-enrollment/manifests/Chart.yaml. Renovate opens one PR for all three and the gateway image.
+gridVersion: 0.2.1
+# The grid gateway image, by the v<gridVersion> tag's multi-arch index digest:
 # skopeo inspect --raw docker://ghcr.io/praxis-proxy/grid-gateway:v<gridVersion> | shasum -a 256
-gridGatewayDigest: sha256:3b6679e885fb9a4ef9fa8b8fb7214de36648e649cbb80722a296b87ea1ce9f42
+gridGatewayImage: ghcr.io/praxis-proxy/grid-gateway:v0.2.1@sha256:a4f8a5e858e08b56359ff12ff507abec0b6e26a2a0bf41e0c7f0943126dde35c
 gridNs: grid
 gridId: aigrid-demo
 gridNetwork: grid
@@ -27,3 +29,9 @@ enrollHost: local-cluster.grid-enrollment.grid-enrollment.svc.clusterset.local:8
 # LoadBalancer would hold the operator until AWS gives it an address. LoadBalancer (an NLB, from
 # platform: aws) once a second remote site joins.
 remoteSwimServiceType: ClusterIP
+# Reach of a remote site's gossip and signals load balancers (the grid chart's loadBalancerScope; it
+# applies only to a LoadBalancer Service). external is an internet-facing NLB, which grid v0.2.0
+# always made; v0.2.1 defaults to internal, an NLB reachable only inside its own VPC, and each spoke
+# is a separate cluster in its own VPC. AWS reads the scope only when it creates the load balancer:
+# changing it means deleting the Service.
+swimLoadBalancerScope: external

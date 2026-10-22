@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Opens a PR when the nightly OpenShift AI catalog moves. Never merges: a bump is a deliberate change (docs/runbook.md).",
+  "description": "Opens a PR when the nightly OpenShift AI catalog or the grid release moves. Never merges: a bump is a deliberate change (docs/runbook.md).",
   "enabledManagers": ["custom.regex"],
   "customManagers": [
     {
@@ -11,12 +11,47 @@
         "catalogImage: (?<depName>quay\\.io/rhoai/rhoai-fbc-fragment):(?<currentValue>[^@\\s]+)@(?<currentDigest>sha256:[a-f0-9]{64})"
       ],
       "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "The grid gateway image in the ai-grid-spokes values",
+      "managerFilePatterns": ["/^apps/ai-grid-spokes/manifests/values\\.yaml$/"],
+      "matchStrings": [
+        "gridGatewayImage: (?<depName>ghcr\\.io/praxis-proxy/grid-gateway):(?<currentValue>v[^@\\s]+)@(?<currentDigest>sha256:[a-f0-9]{64})"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "gridVersion in the ai-grid-spokes values: the grid-operator and praxis-gateway chart version",
+      "managerFilePatterns": ["/^apps/ai-grid-spokes/manifests/values\\.yaml$/"],
+      "matchStrings": ["gridVersion: (?<currentValue>\\S+)"],
+      "depNameTemplate": "ghcr.io/praxis-proxy/charts/grid-operator",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "The grid-enrollment chart version in the hub's wrapper chart",
+      "managerFilePatterns": ["/^apps/grid-enrollment/manifests/Chart\\.yaml$/"],
+      "matchStrings": ["- name: grid-enrollment\\s+version: (?<currentValue>\\S+)"],
+      "depNameTemplate": "ghcr.io/praxis-proxy/charts/grid-enrollment",
+      "datasourceTemplate": "docker"
     }
   ],
   "packageRules": [
     {
       "matchDepNames": ["quay.io/rhoai/rhoai-fbc-fragment"],
       "commitMessageTopic": "nightly OpenShift AI catalog",
+      "automerge": false
+    },
+    {
+      "description": "One PR per grid release, so the charts and the gateway image move together.",
+      "matchDepNames": [
+        "ghcr.io/praxis-proxy/grid-gateway",
+        "ghcr.io/praxis-proxy/charts/grid-operator",
+        "ghcr.io/praxis-proxy/charts/grid-enrollment"
+      ],
+      "groupName": "grid release",
       "automerge": false
     }
   ]
