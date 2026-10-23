@@ -7,10 +7,16 @@ from the [odh-gitops](https://github.com/opendatahub-io/odh-gitops) chart.
 - `env.sh`: every setting and pin, sourced by all scripts.
 - `bootstrap/`: idempotent scripts for the steps that carry secrets or run before Argo CD.
 - `verify/`: user-level checks; `make verify` runs them all.
+- `docs/guide/`: **start here.** A step-by-step guide to building a hub and adding spokes, with
+  troubleshooting and a reference.
 - `docs/runbook.md`: cluster facts, access, and the UAT log.
 - Sample model (fixture): `spokes/models/opt-125m` and `spokes/tenant/` (opt-125m, its MaaS model and the org1 subscription) exist only so `verify/06-tenant-e2e.sh` has a model to call; they're deleted once the provider console deploys models and creates subscriptions.
 
 ## Quick start
+
+For the full walkthrough, see the [AI Grid environment guide](docs/guide/README.md). The guide keeps
+the hub out of the grid and adds separate spokes; this quick start adds the hub itself
+(`local-cluster`) as a one-cluster environment.
 
 On a demo.redhat.com OpenShift 4.21 or later cluster, with a cluster-admin login and a `quay.io/rhoai`
 podman login from a read-only robot account, since the login is copied to every spoke's pull secret
