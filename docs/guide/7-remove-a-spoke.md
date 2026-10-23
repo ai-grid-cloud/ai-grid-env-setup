@@ -189,3 +189,8 @@ To rebuild delivery:
 **Field-tested:** on a one-cluster environment (2026-10-19). With remote spokes, *not yet run*.
 
 To remove the clusters themselves, delete them where you ordered them, such as demo.redhat.com.
+
+## What's next
+
+To keep your clusters up to date with this repository, see
+[Run your own clusters from the template](8-run-your-own-clusters.md).

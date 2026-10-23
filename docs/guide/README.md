@@ -11,6 +11,7 @@ order the first time.
 5. [Serve a model from another site (inference split)](5-inference-split.md)
 6. [Sign in as a tenant](6-tenant-sign-in.md)
 7. [Remove a spoke or tear down](7-remove-a-spoke.md)
+8. [Run your own clusters from the template](8-run-your-own-clusters.md)
 
 When something fails, see [Troubleshooting](troubleshooting.md). For every `make` target, variable,
 and file, see the [Reference](reference.md). The [runbook](../runbook.md) is the engineers' log of
