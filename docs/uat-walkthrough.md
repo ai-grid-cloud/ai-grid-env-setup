@@ -79,7 +79,7 @@ oc get route openshift-gitops-server -n openshift-gitops -o jsonpath='{.spec.hos
 
 - In realm `ai-grid`:
   - **Organizations:** `org1` and `org2`, and their members.
-  - **Groups:** one group per organization, named with its ID, each holding `group1`. On `group1`'s
+  - **Groups:** one group per organization, named after it (`org1`, `org2`), each holding `group1`. On `group1`'s
     **Attributes** tab, `maas_groups` is `<org1 id>/group1`: the token form MaaS reads (ODH-ADR-MS-0007).
   - **Users:** `alice`, `dave`, and `bob`. On `alice`'s **Attributes** tab, find `maas_orgs`.
   - **Client scopes > maas > Mappers:** `username`, `groups` (the user's groups' `maas_groups` values), and
